@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday</title>
+</head>
+
+<body>
+    <style>
+        body {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            text-align: center;
+            background: url(/assets/images/ballons.jpg);
+
+        }
+
+        h1 {
+            color: brown;
+            margin: auto, 0;
+
+        }
+
+        input,
+        button {
+            display: block;
+            margin: 10px 0;
+        }
+
+        .form {
+            padding: 20px;
+            background-color: lightpink;
+            padding: 40px;
+            border-radius: 5px;
+            display: inline-block;
+
+        }
+
+        .result {
+            color: black;
+            font-size: small;
+        }
+    </style>
+    </head>
+
+    <body>
+        <h1>Через сколько дней<br> Твой День Рождения?</h1>
+        <form class="form">
+            <input type="date" id="birthday" value="">
+            <div class="result" value="" id="result"></div>
+            <button id="reset">Посчитать ещё раз</button>
+
+        </form>
+        <script>
+            const ONE_DAY_IN_MS = 86400000;
+            // получение элементов DOM
+            const birthday = document.getElementById('birthday');
+            const result = document.getElementById('result');
+            const reset = document.getElementById('reset');
+
+
+
+            function dayTitle(days) {
+                //правило для чисел от 10 до 20 включительно
+                if (days >= 10 && days <= 20) return 'дней';
+
+                // определение последней цифры числа 
+                let lastDigit = days % 10;
+
+                // определение правильности склонения в зависимости от последней цифры 
+
+                switch (lastDigit) {
+                    case 1:
+                        return 'день';
+                    case 2:
+                    case 3:
+                    case 4:
+                        return 'дня';
+                    default:
+                        return 'дней';
+
+                }
+            }
+            //  проверка наличния необходимых элементов на странице
+            if (birthday && result && reset) {
+                // обработчик изменения даты рождения
+                birthday.addEventListener('change', function (event) {
+                    // получение выбранной даты рождения
+                    const birthdayDay = event.target.valueAsDate.getTime()
+
+                    // получение текущей даты рождения
+                    const today = new Date().getTime();
+
+                    // если выбранная дата рождения в будущем
+                    if (birthdayDay > today) {
+                        let daysLeft = Math.floor((birthdayDay - today) / ONE_DAY_IN_MS);
+                        result.value = daysLeft;
+
+                        result.textContent = "До Твоего Дня Рождения " + daysLeft + " " + dayTitle(daysLeft) +
+                            "!"
+                    } else {
+                        alert("Упс! Дата не должна быть прошедшей"); // если введена прошедшая дата
+                    }
+                });
+
+                reset.addEventListener('click', function (event) {
+                    document.forms["form"].reset(); // сброс результата
+                });
+            };
+        </script>
+    </body>
+
+</html>
